@@ -37,16 +37,17 @@
 
 - (NSArray*)constrainWidthToView:(UIView*)view predicate:(NSString*)predicate;
 - (NSArray*)constrainHeightToView:(UIView*)view predicate:(NSString*)predicate;
-
+- (NSArray *)constrainSquared;
 
 - (NSArray*)constrainTopSpaceToView:(UIView*)view predicate:(NSString*)predicate;
+- (NSArray *)constrainBottomSpaceToView:(UIView *)view predicate:(NSString *)predicate;
 - (NSArray*)constrainLeadingSpaceToView:(UIView*)view predicate:(NSString*)predicate;
-
-
+- (NSArray *)constrainTrailingSpaceToView:(UIView *)view predicate:(NSString *)predicate;
 
 + (NSArray*)alignAttribute:(NSLayoutAttribute)attribute ofViews:(NSArray*)ofViews toViews:(NSArray*)toViews predicate:(NSString*)predicate;
 + (NSArray*)alignAttribute:(NSLayoutAttribute)attribute ofViews:(NSArray*)views toAttribute:(NSLayoutAttribute)toAttribute ofViews:(NSArray*)toViews predicate:(NSString*)predicate;
-
++ (NSArray *)alignAttribute:(NSLayoutAttribute)attribute ofViews:(NSArray *)ofViews toView:(UIView *)toView predicate:(NSString *)predicate;
++ (NSArray *)alignAttribute:(NSLayoutAttribute)attribute ofViews:(NSArray *)views toAttribute:(NSLayoutAttribute)toAttribute ofView:(UIView *)toView predicate:(NSString *)predicate;
 
 + (NSArray*)equalWidthForViews:(NSArray*)views;
 + (NSArray*)equalHeightForViews:(NSArray*)views;

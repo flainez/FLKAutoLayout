@@ -125,16 +125,29 @@ typedef NSArray* (^viewChainingBlock)(UIView* view1, UIView* view2);
 }
 
 
+- (NSArray*)constrainSquared
+{
+    return [self alignAttribute:NSLayoutAttributeWidth toAttribute:NSLayoutAttributeHeight ofView:self predicate:nil];
+}
+
+
 #pragma mark Spacing out two views
 
 - (NSArray*)constrainLeadingSpaceToView:(UIView*)view predicate:(NSString*)predicate {
     return [self alignAttribute:NSLayoutAttributeLeading toAttribute:NSLayoutAttributeTrailing ofView:view predicate:predicate];
 }
 
+- (NSArray*)constrainTrailingSpaceToView:(UIView*)view predicate:(NSString*)predicate {
+    return [self alignAttribute:NSLayoutAttributeTrailing toAttribute:NSLayoutAttributeLeading ofView:view predicate:predicate];
+}
+
 - (NSArray*)constrainTopSpaceToView:(UIView*)view predicate:(NSString*)predicate {
     return [self alignAttribute:NSLayoutAttributeTop toAttribute:NSLayoutAttributeBottom ofView:view predicate:predicate];
 }
 
+- (NSArray*)constrainBottomSpaceToView:(UIView*)view predicate:(NSString*)predicate {
+    return [self alignAttribute:NSLayoutAttributeBottom toAttribute:NSLayoutAttributeTop ofView:view predicate:predicate];
+}
 
 
 
@@ -152,6 +165,23 @@ typedef NSArray* (^viewChainingBlock)(UIView* view1, UIView* view2);
     for (NSUInteger i = 0; i < views.count; i++) {
         NSArray* pairConstraints = [predicateList iteratePredicatesUsingBlock:^NSLayoutConstraint*(FLKAutoLayoutPredicate predicateElement) {
             return [views[i] applyPredicate:predicateElement toView:toViews[i] fromAttribute:attribute toAttribute:toAttribute];
+        }];
+        [constraints addObjectsFromArray:pairConstraints];
+    }
+    return constraints;
+}
+
+
++ (NSArray*)alignAttribute:(NSLayoutAttribute)attribute ofViews:(NSArray*)ofViews toView:(UIView *)toView predicate:(NSString*)predicate {
+    return [self alignAttribute:attribute ofViews:ofViews toAttribute:attribute ofView:toView predicate:predicate];
+}
+
++ (NSArray*)alignAttribute:(NSLayoutAttribute)attribute ofViews:(NSArray*)views toAttribute:(NSLayoutAttribute)toAttribute ofView:(UIView *)toView predicate:(NSString*)predicate {
+    FLKAutoLayoutPredicateList* predicateList = [FLKAutoLayoutPredicateList predicateListFromString:predicate];
+    NSMutableArray* constraints = [NSMutableArray array];
+    for (NSUInteger i = 0; i < views.count; i++) {
+        NSArray* pairConstraints = [predicateList iteratePredicatesUsingBlock:^NSLayoutConstraint*(FLKAutoLayoutPredicate predicateElement) {
+            return [views[i] applyPredicate:predicateElement toView:toView fromAttribute:attribute toAttribute:toAttribute];
         }];
         [constraints addObjectsFromArray:pairConstraints];
     }
